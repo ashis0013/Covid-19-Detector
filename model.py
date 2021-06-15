@@ -1,14 +1,7 @@
-#!/usr/bin/env python
-"""Django's command-line utility for administrative tasks."""
-import os
-import sys
-
-from PIL import Image
 import torch
 import torch.nn as nn
-import torchvision
 from torchvision import transforms
-from os import popen
+import numpy as np
 
 class SinLU(nn.Module):
     def __init__(self):
@@ -93,21 +86,14 @@ class Net(nn.Module):
         return x
 
 
-
-
-def main():
-    """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'covid.settings')
-    try:
-        from django.core.management import execute_from_command_line
-    except ImportError as exc:
-        raise ImportError(
-            "Couldn't import Django. Are you sure it's installed and "
-            "available on your PYTHONPATH environment variable? Did you "
-            "forget to activate a virtual environment?"
-        ) from exc
-    execute_from_command_line(sys.argv)
-
-
-if __name__ == '__main__':
-    main()
+def predict(img):
+    T = transforms.Compose([
+        transforms.Resize((224,224)),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+    ])
+    img = T(img).view(-1,3,224,224)
+    net = torch.load('best.pth',map_location=torch.device('cpu'))
+    x = net(img).detach().numpy()[0]
+    arr = np.exp(x) / np.sum(np.exp(x), axis=0)
+    return np.multiply(np.round(arr,4),100)
