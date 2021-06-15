@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from PIL import Image
 from model import *
 import torch
@@ -12,8 +12,9 @@ app = Flask(__name__)
 def home():
     if request.method == 'POST':
         img = Image.open(request.files['bruh']).convert('RGB')
-        prediction = predict(img)
-        return render_template('result.html',bruh=prediction)
+        pred, score = predict(img)
+        classes = ['COVID-19', 'Pneumonia', 'Normal']
+        return render_template('result.html', content=[classes[pred],score])
     else:
         return render_template('index.html')
     

@@ -94,6 +94,8 @@ def predict(img):
     ])
     img = T(img).view(-1,3,224,224)
     net = torch.load('best.pth',map_location=torch.device('cpu'))
-    x = net(img).detach().numpy()[0]
+    x = net(img)
+    _, pred = x.max(1)
+    x = x.detach().numpy()[0]
     arr = np.exp(x) / np.sum(np.exp(x), axis=0)
-    return np.multiply(np.round(arr,4),100)
+    return  int(pred.item()), np.round(np.multiply(arr,100),2)
