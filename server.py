@@ -14,10 +14,20 @@ def home():
         img = Image.open(request.files['bruh']).convert('RGB')
         pred, score = predict(img)
         classes = ['COVID-19', 'Pneumonia', 'Normal']
-        return render_template('result.html', content=[classes[pred],score])
+        msg = ''
+        if pred == 0:
+            msg = 'You may have COVID.'
+        elif pred == 1:
+            msg = 'You might have a pneumonia.'
+        else :
+            msg = 'You don\'t seem to have any abnormalities.'
+        return render_template('result.html', content=[classes[pred],score,msg])
     else:
         return render_template('index.html')
     
+@app.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html')
 
 if(__name__ == '__main__'):
-    app.run()
+    app.run(debug=True)
