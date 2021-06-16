@@ -25,7 +25,13 @@
         </div>
     </div>
     </nav>
-    <h1>bruh</h1>
+    <div class="container mt-4">
+        <h2 id="covid-19-detector">Covid-19 Detection with Two Stage Transfer Learning</h2>
+        <p>The model is based on a two stage transfer learning method. First the COIVDX dataset is trained on Resnet50. The deep features are extracted and passed through a network with Squeeze Excitaion layers. This secondary network trained with resnet features predicts the final result.</p>
+        <h3 id="architecture">Architecture</h3>
+        <p><img src="https://user-images.githubusercontent.com/31564734/122194946-8c1b4f80-ceb3-11eb-9a2a-49a16666ceac.png" alt="squeeze"></p>
+        <p>The blocks are made up of 1x1 convolution, a squeeze excitation and adaptive average pooling layer.</p>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 </body>
 </html>
